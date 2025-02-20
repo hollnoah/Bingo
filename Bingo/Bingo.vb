@@ -20,6 +20,12 @@ Module Bingo
         DisplayBoard()
     End Sub
 
+    Function BingoTracker(ballNumber As Integer, ballLetter As Integer, Optional clear As Boolean = False) As Boolean(,)
+        Static _bingoTracker(14, 4) As Boolean
+        'actual code here
+        Return _bingoTracker
+    End Function
+
     Sub DisplayBoard()
         Dim temp As String = "X  |"
         Dim heading() As String = {"B", "I", "N", "G", "O"}
