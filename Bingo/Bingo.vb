@@ -17,25 +17,55 @@ Option Compare Text
 Module Bingo
 
     Sub Main()
-        DisplayBoard()
+        For i = 1 To 10
+
+            DrawBall()
+            DisplayBoard()
+            Console.Read()
+            Console.Clear()
+        Next
+    End Sub
+
+    Sub DrawBall()
+        Dim temp(,) As Boolean = BingoTracker(0, 0)
+        Dim currentBallNumber As Integer
+        Dim currentBallLetter As Integer
+
+        Do
+
+            currentBallNumber = RandomNumberBetween(0, 14) 'get row
+            currentBallLetter = RandomNumberBetween(0, 4) 'get column
+
+        Loop Until temp(currentBallNumber, currentBallLetter) = False
+        BingoTracker(currentBallNumber, currentBallLetter)
+
+        Console.WriteLine($"the current row is {currentBallNumber} and column is {currentBallLetter}")
     End Sub
 
     Function BingoTracker(ballNumber As Integer, ballLetter As Integer, Optional clear As Boolean = False) As Boolean(,)
         Static _bingoTracker(14, 4) As Boolean
         'actual code here
+        _bingoTracker(ballNumber, ballLetter) = True
         Return _bingoTracker
     End Function
 
     Sub DisplayBoard()
-        Dim temp As String = "X  |"
+        Dim temp As String = "  |"
         Dim heading() As String = {"B", "I", "N", "G", "O"}
+        Dim tracker(,) As Boolean = BingoTracker(0, 0)
         For Each letter In heading
             Console.Write(letter.PadLeft(2).PadRight(4))
         Next
         Console.WriteLine()
         Console.WriteLine(StrDup(20, "_"))
-        For i = 1 To 15
-            For j = 1 To 5
+        For currentNumber = 0 To 14
+            For currentLetter = 0 To 4
+
+                If tracker(currentNumber, currentLetter) Then
+                    temp = "X |" 'display for drawn balls
+                Else
+                    temp = "" 'display for not drawn balls
+                End If
                 temp = temp.PadLeft(3)
                 Console.Write(temp)
             Next
@@ -48,6 +78,6 @@ Module Bingo
         temp = Rnd()
         temp *= (max + 1) - min
         temp += min
-        Return CInt(temp)
+        Return CInt(Math.Floor(temp))
     End Function
 End Module
