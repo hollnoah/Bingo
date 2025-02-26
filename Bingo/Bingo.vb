@@ -48,14 +48,22 @@ Module Bingo
         Dim currentBallLetter As Integer
         Static ballCounter As Integer
 
-        Do
-            currentBallNumber = RandomNumberBetween(0, 14) 'get row
-            currentBallLetter = RandomNumberBetween(0, 4) 'get column
-        Loop Until temp(currentBallNumber, currentBallLetter) = False Or ballCounter >= 75
-        BingoTracker(currentBallNumber, currentBallLetter, True)
-        ballCounter += 1
+        If clearCount Then
 
-        Console.WriteLine($"the current column is {currentBallLetter + 1} and row is {currentBallNumber + 1}")
+            ballCounter = 0
+
+        Else
+
+            Do
+                currentBallNumber = RandomNumberBetween(0, 14) 'get row
+                currentBallLetter = RandomNumberBetween(0, 4) 'get column
+            Loop Until temp(currentBallNumber, currentBallLetter) = False Or ballCounter >= 75
+            BingoTracker(currentBallNumber, currentBallLetter, True)
+            ballCounter += 1
+            Console.WriteLine($"the current column is {currentBallLetter + 1} and row is {currentBallNumber + 1}")
+
+        End If
+
     End Sub
     ''' <summary>
     ''' Contains a persistent array that tracks all possible bingo balls 
