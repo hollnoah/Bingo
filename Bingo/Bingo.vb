@@ -11,20 +11,24 @@ Option Compare Text
 '[x] Display Bingo Board
 '[x] Draw a random ball that has not already been drawn
 '[x] Update display to show all drawn balls
-'[] Update display to show actual ball number
-'[] Refresh tracking with "C" or when all balls have been drawn 
+'[x] Update display to show actual ball number
+'[x] Refresh tracking with "C" or when all balls have been drawn 
 
 
 Module Bingo
 
     Sub Main()
         Dim userInput As String
+        Dim _lastball As Integer
 
         Do
             Console.Clear()
             DisplayBoard()
             Console.WriteLine()
             'prompt
+            Console.WriteLine("Enter d to draw a ball, c for new game, q to quit")
+            _lastBall = lastBall()
+            Console.WriteLine($"The last ball was {FormatBallNumber(_lastBall(0)}{lastBall(1)}")
             userInput = Console.ReadLine()
 
             Select Case userInput
@@ -60,11 +64,23 @@ Module Bingo
             Loop Until temp(currentBallNumber, currentBallLetter) = False Or ballCounter >= 75
             BingoTracker(currentBallNumber, currentBallLetter, True)
             ballCounter += 1
-            Console.WriteLine($"the current column is {currentBallLetter} and row is {currentBallNumber}")
+            'Console.WriteLine($"the current column is {currentBallLetter} and row is {currentBallNumber}")
 
         End If
 
     End Sub
+
+    Function lastBall(Optional ballNumber As Integer = -1, Optional ballLetter As Integer = -1) As Integer()
+        Static _lastBall(1) As Integer
+
+        If ballNumber = -1 Then
+            _lastBall(0) = ballNumber
+            _lastBall(1) = ballLetter
+        End If
+
+        Return _lastBall
+
+    End Function
     ''' <summary>
     ''' Contains a persistent array that tracks all possible bingo balls 
     ''' and whether they have been drawn during the current game.
@@ -112,7 +128,7 @@ Module Bingo
             Next
             Console.WriteLine()
         Next
-        Console.WriteLine(vbNewLine & StrDup(20, "_"))
+        Console.WriteLine(vbNewLine & StrDup(25, "_"))
     End Sub
 
     Function FormatBallNumber(ballNumber As Integer, ballLetter As Integer) As String
