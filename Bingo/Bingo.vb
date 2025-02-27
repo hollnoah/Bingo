@@ -10,7 +10,7 @@ Option Compare Text
 'TODO
 '[x] Display Bingo Board
 '[x] Draw a random ball that has not already been drawn
-'[] Update display to show all drawn balls
+'[x] Update display to show all drawn balls
 '[] Update display to show actual ball number
 '[] Refresh tracking with "C" or when all balls have been drawn 
 
@@ -60,7 +60,7 @@ Module Bingo
             Loop Until temp(currentBallNumber, currentBallLetter) = False Or ballCounter >= 75
             BingoTracker(currentBallNumber, currentBallLetter, True)
             ballCounter += 1
-            Console.WriteLine($"the current column is {currentBallLetter + 1} and row is {currentBallNumber + 1}")
+            Console.WriteLine($"the current column is {currentBallLetter} and row is {currentBallNumber}")
 
         End If
 
@@ -90,29 +90,38 @@ Module Bingo
     ''' Iterates through the tracker array and displays bingoboard to the console
     ''' </summary>
     Sub DisplayBoard()
-        Dim temp As String = "  |"
+        Dim displayString As String = "  |"
         Dim heading() As String = {"B", "I", "N", "G", "O"}
         Dim tracker(,) As Boolean = BingoTracker(0, 0)
+        Dim columnWidth As Integer = 5
         For Each letter In heading
-            Console.Write(letter.PadLeft(2).PadRight(4))
+            Console.Write(letter.PadLeft(CInt(Math.Ceiling((columnWidth / 2)))).PadRight(columnWidth))
         Next
         Console.WriteLine()
-        Console.WriteLine(StrDup(20, "_"))
+        Console.WriteLine(StrDup(columnWidth * 5, "_"))
         For currentNumber = 0 To 14
             For currentLetter = 0 To 4
 
                 If tracker(currentNumber, currentLetter) Then
-                    temp = " X |" 'display for drawn balls
+                    displayString = $" {FormatBallNumber(currentNumber, currentLetter)} |" 'display for drawn balls
                 Else
-                    temp = "   |" 'display for not drawn balls
+                    displayString = "   |" 'display for not drawn balls
                 End If
-                temp = temp.PadLeft(3)
-                Console.Write(temp)
+                displayString = displayString.PadLeft(columnWidth)
+                Console.Write(displayString)
             Next
             Console.WriteLine()
         Next
         Console.WriteLine(vbNewLine & StrDup(20, "_"))
     End Sub
+
+    Function FormatBallNumber(ballNumber As Integer, ballLetter As Integer) As String
+        Dim _ballNumber As String
+        _ballNumber = CStr((ballNumber + 1) + (ballLetter * 15))
+
+        Return _ballNumber
+
+    End Function
     Function RandomNumberBetween(min As Integer, max As Integer) As Integer
         Dim temp As Single
         Randomize()
