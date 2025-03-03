@@ -27,8 +27,8 @@ Module Bingo
             Console.WriteLine()
             'prompt
             Console.WriteLine("Enter d to draw a ball, c for new game, q to quit")
-            _lastBall = lastBall()
-            Console.WriteLine($"The last ball was {FormatBallNumber(_lastBall(0)}{lastBall(1)}")
+            '_lastBall = lastBall()
+            'Console.WriteLine($"The last ball was {FormatBallNumber(_lastBall(0)}{lastBall(1)}")
             userInput = Console.ReadLine()
 
             Select Case userInput
